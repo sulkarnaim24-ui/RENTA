@@ -284,12 +284,30 @@
                 </a>
             </li>
 
-            @if (Auth::user()->role == 'Superadmin')
+            @if (Auth::user()->role == 'admin')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('user.*') ? '' : 'collapsed' }}"
                         href="{{ route('user.index') }}">
                         <i class='bx bx-user-pin'></i>
                         <span>User</span>
+                    </a>
+                </li>
+                
+                <li class="nav-heading">Menu Kendaraan</li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('vehicle-category.*') ? '' : 'collapsed' }}"
+                        href="{{ route('vehicle-category.index') }}">
+                        <i class='bx bx-purchase-tag'></i>
+                        <span>Kategori Kendaraan</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('vehicle.*') ? '' : 'collapsed' }}"
+                        href="{{ route('vehicle.index') }}">
+                        <i class='bx bx-car'></i>
+                        <span>Data Kendaraan</span>
                     </a>
                 </li>
             @endif

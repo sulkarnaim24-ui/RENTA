@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleCategoryController;
+use App\Http\Controllers\VehicleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,7 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/edit', [DashboardController::class, 'edit'])->name('dashboard.edit');
     Route::put('/dashboard/update', [DashboardController::class, 'update'])->name('dashboard.update');
 
-    Route::resource('/user', UserController::class)->middleware('role:Superadmin');
+    Route::resource('/user', UserController::class)->middleware('role:admin');
+    Route::resource('/vehicle-category', VehicleCategoryController::class)->middleware('role:admin');
+    Route::resource('/vehicle', VehicleController::class)->middleware('role:admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
