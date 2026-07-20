@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             FuelLogSeeder::class,
             MaintenanceRecordSeeder::class,
             DamageReportSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }
