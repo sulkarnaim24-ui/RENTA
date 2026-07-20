@@ -335,6 +335,14 @@
                         <span>Log BBM</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('maintenance-record.*') ? '' : 'collapsed' }}"
+                        href="{{ route('maintenance-record.index') }}">
+                        <i class='bx bx-wrench'></i>
+                        <span>Perawatan Kendaraan</span>
+                    </a>
+                </li>
             @endif
 
 

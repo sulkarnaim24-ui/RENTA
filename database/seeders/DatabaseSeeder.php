@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             DriverSeeder::class,
             RentalSeeder::class,
             FuelLogSeeder::class,
+            MaintenanceRecordSeeder::class,
         ]);
     }
 }
