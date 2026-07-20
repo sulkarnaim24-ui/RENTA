@@ -72,14 +72,52 @@
                         <select class="form-select select2-default @error('role') is-invalid  @enderror" id="role"
                             name="role" required>
                             <option value="">Pilih Role</option>
-                            <option value="Superadmin" @selected(old('role', $user->role) == 'Superadmin')>Superadmin</option>
-                            <option value="Admin" @selected(old('role', $user->role) == 'Admin')>Admin</option>
+                            <option value="admin" @selected(old('role', $user->role) == 'admin')>Admin</option>
+                            <option value="customer" @selected(old('role', $user->role) == 'customer')>Customer</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Telepon</label>
+                        <input class="form-control @error('phone') is-invalid  @enderror" type="text" id="phone"
+                            name="phone" value="{{ old('phone', $user->phone) }}">
+                        @error('phone')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Alamat</label>
+                        <textarea class="form-control @error('address') is-invalid  @enderror" id="address"
+                            name="address" rows="3">{{ old('address', $user->address) }}</textarea>
+                        @error('address')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="driver_license" class="form-label">Foto SIM/KTP</label>
+                        <input class="form-control @error('driver_license') is-invalid  @enderror" type="file" id="driver_license"
+                            name="driver_license">
+                        @error('driver_license')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                        @if($user->driver_license)
+                            <div class="mt-2">
+                                <a href="{{ asset('storage/' . $user->driver_license) }}" target="_blank" class="btn btn-sm btn-info">Lihat Foto SIM/KTP</a>
+                            </div>
+                        @endif
                     </div>
 
                 </div>

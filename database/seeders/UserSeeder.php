@@ -15,14 +15,18 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Tamus Tahir',
-                'email' => 'tamus@gmail.com',
-                'role' => 'Superadmin',
+                'name' => 'Admin Renta',
+                'email' => 'admin@gmail.com',
+                'role' => 'admin',
+                'phone' => '081234567890',
+                'address' => 'Jl. Admin Renta No. 1',
             ],
             [
-                'name' => 'Joh Doe',
-                'email' => 'admin@gmail.com',
-                'role' => 'Admin',
+                'name' => 'Customer Renta',
+                'email' => 'customer@gmail.com',
+                'role' => 'customer',
+                'phone' => '081298765432',
+                'address' => 'Jl. Customer Renta No. 2',
             ],
         ];
 
@@ -35,6 +39,8 @@ class UserSeeder extends Seeder
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'role' => $user['role'],
+                'phone' => $user['phone'],
+                'address' => $user['address'],
             ]);
         }
     }

@@ -38,14 +38,18 @@ class UserController extends Controller
 
         $validate = $request->validate([
             'name' => 'required',
-            'role' => 'required',
+            'role' => 'required|in:admin,customer',
             'password' => 'required|min:8',
             'passwordconfirm' => 'required|same:password',
             'email' => 'required|email|lowercase|unique:users,email',
-            'avatar' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:512'
+            'avatar' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:512',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'driver_license' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048'
         ], [
             'name.required' => 'Nama wajib diisi',
             'role.required' => 'Role wajib diisi',
+            'role.in' => 'Role tidak valid',
             'password.required' => 'Password wajib diisi',
             'password.min' => 'Password minimal 8 karakter',
             'passwordconfirm.required' => 'Konfirmasi password wajib diisi',
@@ -56,6 +60,9 @@ class UserController extends Controller
             'avatar.image' => 'File avatar harus berupa gambar',
             'avatar.mimes' => 'Format avatar harus png, jpg, jpeg, atau svg',
             'avatar.max' => 'Ukuran avatar tidak boleh lebih dari 512 KB',
+            'driver_license.image' => 'File SIM/KTP harus berupa gambar',
+            'driver_license.mimes' => 'Format SIM/KTP harus png, jpg, jpeg, atau svg',
+            'driver_license.max' => 'Ukuran SIM/KTP tidak boleh lebih dari 2048 KB',
         ]);
 
         DB::beginTransaction();
@@ -64,6 +71,9 @@ class UserController extends Controller
 
             if ($request->file('avatar')) {
                 $validate['avatar'] = $request->file('avatar')->store('img', 'public');
+            }
+            if ($request->file('driver_license')) {
+                $validate['driver_license'] = $request->file('driver_license')->store('img/license', 'public');
             }
 
             $validate['password'] = bcrypt($request->password);
@@ -108,14 +118,18 @@ class UserController extends Controller
 
         $validate = $request->validate([
             'name' => 'required',
-            'role' => 'required',
+            'role' => 'required|in:admin,customer',
             'password' => 'nullable|min:8',
             'passwordconfirm' => 'nullable|same:password',
             'email' => 'required|email|lowercase|unique:users,email,' . $user->id,
-            'avatar' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:512'
+            'avatar' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:512',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'driver_license' => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048'
         ], [
             'name.required' => 'Nama wajib diisi',
             'role.required' => 'Role wajib diisi',
+            'role.in' => 'Role tidak valid',
             'password.min' => 'Password minimal 8 karakter',
             'passwordconfirm.same' => 'Konfirmasi password tidak cocok',
             'email.required' => 'Email wajib diisi',
@@ -124,6 +138,9 @@ class UserController extends Controller
             'avatar.image' => 'File avatar harus berupa gambar',
             'avatar.mimes' => 'Format avatar harus png, jpg, jpeg, atau svg',
             'avatar.max' => 'Ukuran avatar tidak boleh lebih dari 512 KB',
+            'driver_license.image' => 'File SIM/KTP harus berupa gambar',
+            'driver_license.mimes' => 'Format SIM/KTP harus png, jpg, jpeg, atau svg',
+            'driver_license.max' => 'Ukuran SIM/KTP tidak boleh lebih dari 2048 KB',
         ]);
 
         DB::beginTransaction();
@@ -134,6 +151,13 @@ class UserController extends Controller
                 $validate['avatar'] = $request->file('avatar')->store('img', 'public');
                 if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                     Storage::disk('public')->delete($user->avatar);
+                }
+            }
+
+            if ($request->file('driver_license')) {
+                $validate['driver_license'] = $request->file('driver_license')->store('img/license', 'public');
+                if ($user->driver_license && Storage::disk('public')->exists($user->driver_license)) {
+                    Storage::disk('public')->delete($user->driver_license);
                 }
             }
 
@@ -161,11 +185,15 @@ class UserController extends Controller
 
         try {
             $avatar = $user->avatar;
+            $driver_license = $user->driver_license;
             
             $user->delete();
 
             if ($avatar && Storage::disk('public')->exists($avatar)) {
                 Storage::disk('public')->delete($avatar);
+            }
+            if ($driver_license && Storage::disk('public')->exists($driver_license)) {
+                Storage::disk('public')->delete($driver_license);
             }
 
             DB::commit();
