@@ -343,6 +343,14 @@
                         <span>Perawatan Kendaraan</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('damage-report.*') ? '' : 'collapsed' }}"
+                        href="{{ route('damage-report.index') }}">
+                        <i class='bx bx-error-circle'></i>
+                        <span>Laporan Kerusakan</span>
+                    </a>
+                </li>
             @endif
 
 

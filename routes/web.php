@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\FuelLogController;
 use App\Http\Controllers\MaintenanceRecordController;
+use App\Http\Controllers\DamageReportController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/rental', RentalController::class)->middleware('role:admin');
     Route::resource('/fuel-log', FuelLogController::class)->middleware('role:admin');
     Route::resource('/maintenance-record', MaintenanceRecordController::class)->middleware('role:admin');
+    Route::resource('/damage-report', DamageReportController::class)->middleware('role:admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
