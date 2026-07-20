@@ -318,6 +318,14 @@
                         <span>Data Pengemudi</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('rental.*') ? '' : 'collapsed' }}"
+                        href="{{ route('rental.index') }}">
+                        <i class='bx bx-book-content'></i>
+                        <span>Data Rental</span>
+                    </a>
+                </li>
             @endif
 
 
