@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             MaintenanceRecordSeeder::class,
             DamageReportSeeder::class,
             PaymentSeeder::class,
+            InsuranceRecordSeeder::class,
         ]);
     }
 }

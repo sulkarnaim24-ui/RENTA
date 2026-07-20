@@ -360,6 +360,14 @@
                         <span>Laporan Kerusakan</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('insurance-record.*') ? '' : 'collapsed' }}"
+                        href="{{ route('insurance-record.index') }}">
+                        <i class='bx bx-shield-quarter'></i>
+                        <span>Asuransi Kendaraan</span>
+                    </a>
+                </li>
             @endif
 
 

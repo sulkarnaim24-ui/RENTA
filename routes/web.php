@@ -8,6 +8,7 @@ use App\Http\Controllers\FuelLogController;
 use App\Http\Controllers\MaintenanceRecordController;
 use App\Http\Controllers\DamageReportController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InsuranceRecordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/maintenance-record', MaintenanceRecordController::class)->middleware('role:admin');
     Route::resource('/damage-report', DamageReportController::class)->middleware('role:admin');
     Route::resource('/payment', PaymentController::class)->middleware('role:admin');
+    Route::resource('/insurance-record', InsuranceRecordController::class)->middleware('role:admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
