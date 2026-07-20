@@ -310,6 +310,14 @@
                         <span>Data Kendaraan</span>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('driver.*') ? '' : 'collapsed' }}"
+                        href="{{ route('driver.index') }}">
+                        <i class='bx bx-id-card'></i>
+                        <span>Data Pengemudi</span>
+                    </a>
+                </li>
             @endif
 
 

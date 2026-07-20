@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/user', UserController::class)->middleware('role:admin');
     Route::resource('/vehicle-category', VehicleCategoryController::class)->middleware('role:admin');
     Route::resource('/vehicle', VehicleController::class)->middleware('role:admin');
+    Route::resource('/driver', DriverController::class)->middleware('role:admin');
 
     Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
     Route::put('/setting/{setting}/update', [SettingController::class, 'update'])->name('setting.update');
