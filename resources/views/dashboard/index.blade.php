@@ -141,7 +141,7 @@
                                 <i class='bx bx-wrench fs-3 me-2'></i>
                                 <div>
                                     <small class="d-block fw-bold">Perawatan {{ $mtn->vehicle->name }} ({{ $mtn->vehicle->license_plate }})</small>
-                                    <small>Jadwal: {{ \Carbon\Carbon::parse($mtn->scheduled_date)->format('d/m/Y') }}</small>
+                                    <small>Jadwal: {{ \Carbon\Carbon::parse($mtn->next_maintenance_date)->format('d/m/Y') }}</small>
                                 </div>
                             </div>
                         @endforeach

@@ -22,7 +22,11 @@ class DashboardController extends Controller
         $adminCount = \App\Models\User::where('role', 'Admin')->count();
 
         // 2. Notifikasi (Perawatan & Asuransi)
-        $pendingMaintenances = \App\Models\MaintenanceRecord::with('vehicle')->where('status', 'scheduled')->get();
+        $pendingMaintenances = \App\Models\MaintenanceRecord::with('vehicle')
+            ->whereNotNull('next_maintenance_date')
+            ->where('next_maintenance_date', '<=', \Carbon\Carbon::now()->addDays(14))
+            ->orderBy('next_maintenance_date', 'asc')
+            ->get();
         $expiringInsurances = \App\Models\InsuranceRecord::with('vehicle')
             ->where('end_date', '<=', \Carbon\Carbon::now()->addDays(30))
             ->orderBy('end_date', 'asc')
