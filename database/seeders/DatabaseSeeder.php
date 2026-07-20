@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             DriverSeeder::class,
             RentalSeeder::class,
+            FuelLogSeeder::class,
         ]);
     }
 }

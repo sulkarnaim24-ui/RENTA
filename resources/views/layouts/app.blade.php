@@ -326,6 +326,15 @@
                         <span>Data Rental</span>
                     </a>
                 </li>
+
+                <li class="nav-heading">Operasional</li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('fuel-log.*') ? '' : 'collapsed' }}"
+                        href="{{ route('fuel-log.index') }}">
+                        <i class='bx bx-gas-pump'></i>
+                        <span>Log BBM</span>
+                    </a>
+                </li>
             @endif
 
 
