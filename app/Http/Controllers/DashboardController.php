@@ -11,15 +11,58 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // 1. Agregasi Data Utama
+        $activeRentalsCount = \App\Models\Rental::whereIn('status', ['active', 'paid', 'pending'])->count();
+        $totalRevenue = \App\Models\Payment::where('status', 'verified')->sum('amount');
+        $activeVehiclesCount = \App\Models\Vehicle::where('status', 'available')->count();
+        
+        // Data User Stats
         $totalUsers = \App\Models\User::count();
         $superadminCount = \App\Models\User::where('role', 'Superadmin')->count();
         $adminCount = \App\Models\User::where('role', 'Admin')->count();
 
+        // 2. Notifikasi (Perawatan & Asuransi)
+        $pendingMaintenances = \App\Models\MaintenanceRecord::with('vehicle')->where('status', 'scheduled')->get();
+        $expiringInsurances = \App\Models\InsuranceRecord::with('vehicle')
+            ->where('end_date', '<=', \Carbon\Carbon::now()->addDays(30))
+            ->orderBy('end_date', 'asc')
+            ->get();
+
+        // 3. Data Grafik (Pendapatan per Bulan - 6 bulan terakhir)
+        $sixMonthsAgo = \Carbon\Carbon::now()->subMonths(5)->startOfMonth();
+        $payments = \App\Models\Payment::where('status', 'verified')
+            ->where('payment_date', '>=', $sixMonthsAgo)
+            ->get()
+            ->groupBy(function($date) {
+                return \Carbon\Carbon::parse($date->payment_date)->format('Y-m');
+            });
+        
+        $months = [];
+        $revenues = [];
+        
+        for ($i = 5; $i >= 0; $i--) {
+            $monthString = \Carbon\Carbon::now()->subMonths($i)->format('Y-m');
+            $months[] = \Carbon\Carbon::now()->subMonths($i)->translatedFormat('M Y');
+            
+            if(isset($payments[$monthString])) {
+                $revenues[] = $payments[$monthString]->sum('amount');
+            } else {
+                $revenues[] = 0;
+            }
+        }
+
         return view('dashboard.index', [
             'title' => 'Dashboard',
+            'activeRentalsCount' => $activeRentalsCount,
+            'totalRevenue' => $totalRevenue,
+            'activeVehiclesCount' => $activeVehiclesCount,
             'totalUsers' => $totalUsers,
             'superadminCount' => $superadminCount,
             'adminCount' => $adminCount,
+            'pendingMaintenances' => $pendingMaintenances,
+            'expiringInsurances' => $expiringInsurances,
+            'chartMonths' => $months,
+            'chartRevenues' => $revenues,
         ]);
     }
 

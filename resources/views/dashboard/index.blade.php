@@ -30,68 +30,122 @@
 
     <!-- Statistics Cards -->
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Total Users</p>
-                            <h2 class="fw-bold mb-0">{{ $totalUsers }}</h2>
+                            <p class="text-muted mb-1 small">Rental Aktif</p>
+                            <h2 class="fw-bold mb-0">{{ $activeRentalsCount }}</h2>
                         </div>
                         <div class="bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-user fs-2 text-primary'></i>
+                            <i class='bx bx-car fs-2 text-primary'></i>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer bg-primary bg-opacity-10 border-0 py-2">
-                    <small class="text-primary fw-semibold">
-                        <i class='bx bx-trending-up me-1'></i>
-                        All registered users
-                    </small>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Superadmin</p>
-                            <h2 class="fw-bold mb-0">{{ $superadminCount }}</h2>
+                            <p class="text-muted mb-1 small">Kendaraan Tersedia</p>
+                            <h2 class="fw-bold mb-0">{{ $activeVehiclesCount }}</h2>
                         </div>
                         <div class="bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-shield fs-2 text-success'></i>
+                            <i class='bx bx-check-shield fs-2 text-success'></i>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer bg-success bg-opacity-10 border-0 py-2">
-                    <small class="text-success fw-semibold">
-                        <i class='bx bx-check-circle me-1'></i>
-                        Full access users
-                    </small>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <p class="text-muted mb-1 small">Admin</p>
-                            <h2 class="fw-bold mb-0">{{ $adminCount }}</h2>
+                            <p class="text-muted mb-1 small">Total Pendapatan</p>
+                            <h4 class="fw-bold mb-0">Rp{{ number_format($totalRevenue, 0, ',', '.') }}</h4>
                         </div>
                         <div class="bg-info bg-opacity-10 rounded-circle p-3">
-                            <i class='bx bx-user-check fs-2 text-info'></i>
+                            <i class='bx bx-money fs-2 text-info'></i>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-info bg-opacity-10 border-0 py-2">
-                    <small class="text-info fw-semibold">
-                        <i class='bx bx-user-circle me-1'></i>
-                        Standard access users
-                    </small>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1 small">Total Pengguna</p>
+                            <h2 class="fw-bold mb-0">{{ $totalUsers }}</h2>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-circle p-3">
+                            <i class='bx bx-user fs-2 text-warning'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <!-- Chart -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold">
+                        <i class='bx bx-line-chart text-primary me-2'></i>
+                        Grafik Pendapatan (6 Bulan Terakhir)
+                    </h5>
+                </div>
+                <div class="card-body pt-3">
+                    <div id="revenueChart"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notifications -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 fw-bold">
+                        <i class='bx bx-bell text-danger me-2'></i>
+                        Peringatan & Notifikasi
+                    </h5>
+                </div>
+                <div class="card-body pt-3" style="max-height: 400px; overflow-y: auto;">
+                    @if($pendingMaintenances->count() == 0 && $expiringInsurances->count() == 0)
+                        <div class="alert alert-success">
+                            Semua kendaraan dalam kondisi optimal. Tidak ada peringatan asuransi atau perawatan.
+                        </div>
+                    @else
+                        @foreach($expiringInsurances as $ins)
+                            <div class="alert alert-danger d-flex align-items-center p-2 mb-2">
+                                <i class='bx bx-shield-quarter fs-3 me-2'></i>
+                                <div>
+                                    <small class="d-block fw-bold">Asuransi {{ $ins->vehicle->name }} ({{ $ins->vehicle->license_plate }})</small>
+                                    <small>Kedaluwarsa: {{ \Carbon\Carbon::parse($ins->end_date)->format('d/m/Y') }}</small>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        @foreach($pendingMaintenances as $mtn)
+                            <div class="alert alert-warning d-flex align-items-center p-2 mb-2">
+                                <i class='bx bx-wrench fs-3 me-2'></i>
+                                <div>
+                                    <small class="d-block fw-bold">Perawatan {{ $mtn->vehicle->name }} ({{ $mtn->vehicle->license_plate }})</small>
+                                    <small>Jadwal: {{ \Carbon\Carbon::parse($mtn->scheduled_date)->format('d/m/Y') }}</small>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -213,6 +267,51 @@
     @endpush
 
     @push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            new ApexCharts(document.querySelector("#revenueChart"), {
+                series: [{
+                    name: 'Pendapatan',
+                    data: {!! json_encode($chartRevenues) !!}
+                }],
+                chart: {
+                    height: 350,
+                    type: 'area',
+                    toolbar: { show: false }
+                },
+                markers: { size: 4 },
+                colors: ['#000080'],
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.3,
+                        opacityTo: 0.1,
+                        stops: [0, 90, 100]
+                    }
+                },
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+                xaxis: {
+                    categories: {!! json_encode($chartMonths) !!}
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (value) {
+                            return "Rp " + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function(val) {
+                            return "Rp " + new Intl.NumberFormat('id-ID').format(val);
+                        }
+                    }
+                }
+            }).render();
+        });
+    </script>
     @endpush
 
 </x-app>
